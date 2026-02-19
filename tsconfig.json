@@ -1,0 +1,34 @@
+{
+  "compilerOptions": {
+    /* Lenguaje y Módulos */
+    "target": "ES2022",                                  
+    "module": "CommonJS",                                
+    "moduleResolution": "node",                          
+
+    /* Ubicación de archivos */
+    "rootDir": "./src",                                  
+    "outDir": "./dist",                                  
+
+    /* Interoperabilidad y compatibilidad */
+    "esModuleInterop": true,                             
+    "forceConsistentCasingInFileNames": true,            
+
+    /* Verificaciones estrictas de tipo (Ideal para Clean Architecture) */
+    "strict": true,                                      
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictPropertyInitialization": false,
+
+    /* Optimización de compilación */
+    "skipLibCheck": true                                 
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "**/*.spec.ts",
+    "**/*.test.ts"
+  ]
+}

@@ -2,8 +2,11 @@ import { EnumValueObject } from "../../../../shared/domain/value-objects/enum-va
 
 export enum ProductBaseUnitEnum {
     KILOGRAMO = 'kg',
+    GRAMO = 'g',
     LIBRAS = 'lb',
-    ONZAS = 'oz'
+    MILILITROS = 'ml',
+    LITROS = 'lt',
+    UNIDAD = 'unidad'
 }
 
 export class ProductBaseUnit extends EnumValueObject<ProductBaseUnitEnum> {
@@ -14,7 +17,7 @@ export class ProductBaseUnit extends EnumValueObject<ProductBaseUnitEnum> {
 
     private isValidBaseUnit(value: ProductBaseUnitEnum): void {
         if (!Object.values(ProductBaseUnitEnum).includes(value)) {
-            throw new Error(`Las unidades deben de ser: kg, lb u oz`);
+            throw new Error(`Las unidades deben de ser: kg, g, lb, ml, lt, unidad`);
         }
     }
 }   
