@@ -1,22 +1,38 @@
-import { PresentationID } from "./catalog/product/domain/entities/presentation/presentation-id";
+import { connectToDatabase, closeDatabaseConnection } from "./shared/infrastructure/mongodb-connection";
+import { MongoProductRepository } from "./catalog/product/infrastructure/mongo-product-repository";
 import { Product } from "./catalog/product/domain/product";
-import { ProductID } from './catalog/product/domain/value-objects/product-id';
+import { ProductID } from "./catalog/product/domain/value-objects/product-id";
+import { PresentationID } from "./catalog/product/domain/entities/presentation/presentation-id";
 
-function main() {
+async function main() {
     try {
-        console.log('Creando producto...');
-        
+        const client = await connectToDatabase();
+        const productRepository = new MongoProductRepository(client);
+
+        console.log('Creando Producto');
         const producto = Product.build(
             ProductID.randomID().value,
-            'Producto de prueba',
+            'Wiskas para gato', 
             'kg',
-            [{id: PresentationID.randomID().value, name: 'Bolsa de 1 Kilo', type: 'bag', netQuantity: 1, unitOfMeasure: 'kg'}]    
+            [
+                {
+                    id: PresentationID.randomID().value,
+                    name: 'Bolsa de 1 Kilo',
+                    type: 'bag',
+                    netQuantity: 1,
+                    unitOfMeasure: 'kg'
+                }
+            ]
         );
-        
-        console.log('Producto creado con éxito:', producto, producto.presentations);
-        
+
+        console.log('Guardando producto...');
+        await productRepository.save(producto);
+        console.log('Producto guardado con exito');
+
     } catch (error: any) {
-        console.error('Error al crear el producto:', error.message);
+        console.error('Ocurrió un error:', error.message);
+    } finally {
+        await closeDatabaseConnection();
     }
 }
 

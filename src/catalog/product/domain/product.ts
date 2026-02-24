@@ -52,7 +52,6 @@ export class Product {
 
             product.addPresentation(presentationEntity);
         }
-        
         return product
     }
 
@@ -67,5 +66,17 @@ export class Product {
                 `Error: El producto "${this.productName.value}" ya tiene el máximo permitido de 5 presentaciones.`);
         }
         this._presentations.push(presentation);
+    }
+
+    public getProductId(): ProductID {
+        return this.productId;
+    }
+
+    public getProductName(): ProductName {
+        return this.productName;
+    }
+
+    public getProductBaseUnit(): ProductBaseUnit {
+        return this.productBaseUnit;
     }
 }
