@@ -1,10 +1,12 @@
 {
   "dependencies": {
     "mongodb": "^6.21.0",
+    "process": "^0.11.10",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@types/mongodb": "^4.0.6",
+    "@types/node": "^25.3.1",
     "@types/uuid": "^10.0.0"
   }
 }
