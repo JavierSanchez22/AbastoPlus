@@ -11,7 +11,9 @@
 
     /* Interoperabilidad y compatibilidad */
     "esModuleInterop": true,                             
-    "forceConsistentCasingInFileNames": true,            
+    "forceConsistentCasingInFileNames": true,      
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,      
 
     /* Verificaciones estrictas de tipo (Ideal para Clean Architecture) */
     "strict": true,                                      

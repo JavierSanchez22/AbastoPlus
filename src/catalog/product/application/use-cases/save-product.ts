@@ -1,5 +1,7 @@
 import { Product, PresentationPrimitive } from "../../domain/product";
 import { ProductRepository } from "../product-repository";
+import { injectable, inject } from "inversify";
+import { TYPES } from "../../../../types";
 
 export interface ProductPrimitives {
     id: string;
@@ -8,10 +10,11 @@ export interface ProductPrimitives {
     presentations: PresentationPrimitive[];
 }
 
+@injectable() // Esto es para que se pueda inyectar esta clase con inversify
 export class SaveProduct {
     private readonly productRepository: ProductRepository;
     
-    constructor(productRepository: ProductRepository) {
+    constructor(@inject(TYPES.ProductRepository) productRepository: ProductRepository) { // Inyectamos el repositorio de productos usando inversify
         this.productRepository = productRepository;
     }
 

@@ -1,12 +1,15 @@
 import { ProductRepository } from "../application/product-repository";
 import { Product } from "../domain/product";
 import { MongoClient, Collection } from "mongodb";
+import { injectable, inject } from "inversify";
+import { TYPES } from "../../../types";
 
 
-
+@injectable() // Esto es para que se pueda inyectar esta clase con inversify
 export class MongoProductRepository implements ProductRepository {
     private readonly collection: Collection;
-    constructor(client: MongoClient) {
+
+    constructor(@inject(TYPES.MongoClient) client: MongoClient) { // Inyectamos el cliente de MongoDB usando inversify
         const db = client.db('AbastoPlusDB');
         this.collection = db.collection('products');
     }
