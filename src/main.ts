@@ -21,12 +21,12 @@ async function main() {
         console.log('Producto...');
         const productDataPayload = {
             id: ProductID.randomID().value, 
-            name: 'Wiskas para Gato',
+            name: 'Wiskas para Gato Adulto mayor de 7 años',
             baseUnit: 'kg',
             presentations: [
                 {
                     id: PresentationID.randomID().value,
-                    name: 'Bolsa grande 500g',
+                    name: 'Bolsa grande de 500g',
                     type: 'box',
                     netQuantity: 2,
                     unitOfMeasure: 'kg'
