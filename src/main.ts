@@ -1,5 +1,4 @@
-// file: src/main.ts
-import "reflect-metadata"; // IMPORTANTE: Debe ir en la primera línea
+import "reflect-metadata"; 
 import { container } from "./inversify.config";
 import { TYPES } from "./types";
 import { connectToDatabase, closeDatabaseConnection } from "./shared/infrastructure/mongodb-connection";
