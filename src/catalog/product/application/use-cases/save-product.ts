@@ -16,7 +16,6 @@ export class SaveProduct {
     }
 
     public async execute(data: ProductPrimitives): Promise<void> {
-
         const product = Product.build(
             data.id,
             data.name,

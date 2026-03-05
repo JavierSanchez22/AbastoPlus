@@ -2,10 +2,9 @@ import { ProductRepository } from "../application/product-repository";
 import { Product } from "../domain/product";
 import { MongoClient, Collection } from "mongodb";
 
-
-
 export class MongoProductRepository implements ProductRepository {
     private readonly collection: Collection;
+
     constructor(client: MongoClient) {
         const db = client.db('AbastoPlusDB');
         this.collection = db.collection('products');
@@ -33,6 +32,6 @@ export class MongoProductRepository implements ProductRepository {
             { upsert: true }
         );
         
-        console.log(`Producto Guardado con exito: ${productDocument.name}`);
+        console.log(`Producto Guardado con éxito: ${productDocument.name}`);
     }
 }

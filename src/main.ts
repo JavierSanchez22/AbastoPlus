@@ -1,4 +1,3 @@
-// file: src/main.ts
 import { connectToDatabase, closeDatabaseConnection } from "./shared/infrastructure/mongodb-connection";
 import { MongoProductRepository } from "./catalog/product/infrastructure/mongo-product-repository";
 import { SaveProduct } from "./catalog/product/application/use-cases/save-product";
@@ -7,34 +6,36 @@ import { PresentationID } from "./catalog/product/domain/entities/presentation/p
 
 async function main() {
     try {
-        // Conexion a la base de datos
+        // 1. Inyección de la conexión a la Infraestructura
         const client = await connectToDatabase();
+        
+        // 2. Inyección del cliente al Repositorio
         const productRepository = new MongoProductRepository(client);
+        
+        // 3. Inyección del Repositorio al Caso de Uso
         const saveProductUseCase = new SaveProduct(productRepository);
 
-        console.log('Producto...');
+        console.log('Iniciando proceso de guardado...');
         const productDataPayload = {
             id: ProductID.randomID().value, 
-            name: 'Wiskas para Gato',
+            name: 'Wiskas para Gato Adulto',
             baseUnit: 'kg',
             presentations: [
                 {
                     id: PresentationID.randomID().value,
-                    name: 'Bolsa grande 500g',
-                    type: 'box',
+                    name: 'Bolsa grande 2kg',
+                    type: 'bag',
                     netQuantity: 2,
                     unitOfMeasure: 'kg'
                 }
             ]
         };
 
-        console.log('Guardardando Producto...');
         await saveProductUseCase.execute(productDataPayload);
 
     } catch (error: any) {
         console.error('Ocurrió un error:', error.message);
     } finally {
-        // Cerramos conexion con la base de datos
         await closeDatabaseConnection();
     }
 }
