@@ -18,7 +18,7 @@ export interface PresentationPrimitive {
 
 export class Product {
     private readonly productId: ProductID;
-    private readonly productName: ProductName;
+    private productName: ProductName;
     private readonly productBaseUnit: ProductBaseUnit;
     private _presentations: Presentation[];
     
@@ -66,6 +66,23 @@ export class Product {
                 `Error: El producto "${this.productName.value}" ya tiene el máximo permitido de 5 presentaciones.`);
         }
         this._presentations.push(presentation);
+    }
+
+    public updateTranslations(translatedName: string, translatedPresentations: PresentationPrimitive[]): void {
+        this.productName = new ProductName(translatedName);
+        
+        this._presentations = []; 
+        
+        for (const p of translatedPresentations) {
+            const presentationEntity = new Presentation(
+                new PresentationID(p.id),
+                new PresentationName(p.name),
+                new PresentationType(p.type),
+                new PresentationNetQuantity(p.netQuantity),
+                new PresentationUnitOfMeasure(p.unitOfMeasure)
+            );
+            this.addPresentation(presentationEntity);
+        }
     }
 
     public getProductId(): ProductID {

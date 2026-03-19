@@ -38,4 +38,16 @@ export class MongoProductRepository implements ProductRepository {
         
         console.log(`Producto Guardado con exito: ${productDocument.name}`);
     }
+
+    async findById(id: string): Promise<Product | null> {
+        const productDocument = await this.collection.findOne({ id });
+        if (!productDocument) return null;
+
+        return Product.build(
+            productDocument.id,
+            productDocument.name,
+            productDocument.baseUnit,
+            productDocument.presentations
+        );
+    }
 }
