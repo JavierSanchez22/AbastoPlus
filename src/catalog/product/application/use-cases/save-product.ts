@@ -1,8 +1,9 @@
 import { Product, PresentationPrimitive } from "../../domain/product";
 import { ProductRepository } from "../product-repository";
-import { TranslatorService } from "../ports/translator-servicie";
 import { injectable, inject } from "inversify";
 import { TYPES } from "../../../../types";
+import { EventBus } from "../../../../shared/domain/events/event-bus";
+import { ProductCreatedEvent } from "../../domain/events/product-created-event";
 
 export interface ProductPrimitives {
     id: string;
@@ -11,33 +12,33 @@ export interface ProductPrimitives {
     presentations: PresentationPrimitive[];
 }
 
-@injectable() // Esto es para que se pueda inyectar esta clase con inversify
+@injectable()
 export class SaveProduct {
-    private readonly productRepository: ProductRepository;
     
     constructor(
-        @inject(TYPES.ProductRepository) productRepository: ProductRepository,
-        @inject(TYPES.TranslatorService) private readonly translatorService: TranslatorService
-    ) { // Inyectamos el repositorio de productos y el servicio de traducción usando inversify
-        this.productRepository = productRepository;
-    }
+        @inject(TYPES.ProductRepository) private readonly productRepository: ProductRepository,
+        @inject(TYPES.EventBus) private readonly eventBus: EventBus
+    ) {}
 
     public async execute(data: ProductPrimitives): Promise<void> {
-        const translatedName = await this.translatorService.translateToEnglish(data.name);
-
-        const translatedPresentations = await Promise.all(
-            data.presentations.map(async (p) => ({
-                ...p,
-                name: await this.translatorService.translateToEnglish(p.name)
-            }))
-        );
-
+        // Se construye el producto en español
         const product = Product.build(
             data.id,
-            translatedName,
+            data.name,
             data.baseUnit,
-            translatedPresentations
+            data.presentations
         );
+        
+        // Se guarda en la base de datos
         await this.productRepository.save(product);
+        
+        // Se dispara el evento al Bus pasando los primitivos (el Payload)
+        await this.eventBus.publish([
+            new ProductCreatedEvent(
+                product.getProductId().value, 
+                product.getProductName().value,
+                data.presentations
+            )
+        ]);
     }
 }

@@ -34,8 +34,13 @@ async function main() {
             ]
         };
 
-        console.log('Guardardando Producto...');
+        console.log('Guardardando Producto (En español)...');
         await saveProductUseCase.execute(productDataPayload);
+
+        console.log('Producto guardado con exito')
+        console.log('Traduciendo el producto')
+        
+        await new Promise(resolve => setTimeout(resolve, 5000));
 
     } catch (error: any) {
         console.error('Ocurrió un error:', error.message);
