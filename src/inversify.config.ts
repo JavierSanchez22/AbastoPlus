@@ -15,9 +15,6 @@ container.bind<EventBus>(TYPES.EventBus).to(InMemoryEventBus).inSingletonScope()
 container.bind<ProductRepository>(TYPES.ProductRepository).to(MongoProductRepository);
 
 container.bind<TranslateProductSubscriber>(TranslateProductSubscriber).toSelf();
-// Obtenemos la instancia del bus de eventos
-const bus = container.get<EventBus>(TYPES.EventBus);
-const translatorSubscriber = container.get<TranslateProductSubscriber>(TranslateProductSubscriber);
 
 // Declaramos el caso de uso SaveProduct, indicando que se debe proporcionar una instancia de SaveProduct cuando se solicite.
 container.bind<SaveProduct>(SaveProduct).toSelf();
@@ -25,7 +22,14 @@ container.bind<SaveProduct>(SaveProduct).toSelf();
 // El servicio de traduccion
 container.bind(TYPES.TranslatorService).to(ApiTranslatorService);
 
-// Si tenemos suscriptores, los agregamos al bus de eventos
-bus.addSubscribers("catalog.product_created", [translatorSubscriber]);
+export function setupEventBus(): void {
+    const bus = container.get<EventBus>(TYPES.EventBus);
+    
+    // Obtenemos el suscriptor
+    const translateSubscriber = container.get<TranslateProductSubscriber>(TranslateProductSubscriber);
+    
+    // Lo inscribimos en el bus
+    bus.addSubscribers("catalog.product_created", [translateSubscriber]);
+}
 
 export { container };
